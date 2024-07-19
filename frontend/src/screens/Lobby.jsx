@@ -1,5 +1,6 @@
 import React, { useCallback ,useEffect} from "react";
 import { useState } from "react";
+import './Lobby.css'
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../Context/SocketProvider";
 const LobbyScreen=()=>{
@@ -27,7 +28,8 @@ useEffect(()=>{
 
     return(
         <div>
-            <h1>Lobby </h1>
+            <h1 className="heading">LetsMeet</h1>
+            <h2>Lobby </h2>
             <form onSubmit={handleSubmitForm}>
                 <label  htmlFor="email">Email Id</label>
                 <input type='email' id="email"

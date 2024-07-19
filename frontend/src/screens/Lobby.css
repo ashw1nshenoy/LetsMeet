@@ -1,0 +1,11 @@
+body{
+    background-color: whitesmoke;
+}
+.heading{
+    font-size: 70px;
+    font-weight: 600;
+    background-image: conic-gradient(#553c9a 27%, #ee4b2b 24%, #ee4b2b 70%, #00c2cb 80%, #7d65c0);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
