@@ -1,7 +1,9 @@
 import React,{useEffect,useCallback,useState} from "react";
 import { useSocket } from "../Context/SocketProvider";
 import ReactPlayer from 'react-player'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import peer from '../service/peer'
+import './Room.css'
 
 const RoomPage=()=>{
 
@@ -12,6 +14,12 @@ const[remoteSocketId,setRemoteSocketId]=useState(null)
 const [myStream,setMyStream]=useState(null)
 
 const [remoteStream,setRemoteStream]=useState(null)
+
+
+const { transcript,browserSupportsSpeechRecognition } = useSpeechRecognition()
+const StartListening=()=>SpeechRecognition.startListening({ continuous: true,language:'en-IN' })
+const StopListening=()=>SpeechRecognition.stopListening()
+
 
 const handleUserJoined=useCallback(({email,id})=>{
     console.log(`email ${email} joined the room`)
@@ -112,7 +120,10 @@ useEffect(()=>{
     }
     
 },[socket, handleUserJoined, handleIncomingCall, handleCallAccepted, handleNegoNeedIncoming, handleNegoNeedFinal])
-
+if (!browserSupportsSpeechRecognition) {
+    console.log('Support illa')
+    return null
+  }
     return (
         <div>
             <h1>Room Page</h1>
@@ -129,8 +140,7 @@ useEffect(()=>{
                 <>   
                 <h1>My Stream</h1>
                 <ReactPlayer 
-                playing 
-                muted 
+                playing  
                 height="250px" 
                 width="300px" 
                 url={myStream}/>
@@ -142,14 +152,23 @@ useEffect(()=>{
                 <>   
                 <h1>Remote Stream</h1>
                 <ReactPlayer
-                playing 
-                muted 
+                playing  
                 height="250px"
                 width="300px"
                 url={remoteStream}/>
                 </>
  
             }
+            <div>
+                <h3>Listening to you</h3>
+                <div className="textBox">
+                    <button onClick={StartListening}>Start Listening</button>
+                    <button onClick={StopListening}>Stop Listening</button>
+                    <div>
+                    <p>{transcript}</p>
+                    </div>
+                </div> 
+            </div>
         </div>
     )
 }

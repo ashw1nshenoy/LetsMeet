@@ -29,19 +29,20 @@ useEffect(()=>{
     return(
         <div>
             <h1 className="heading">LetsMeet</h1>
-            <h2>Lobby </h2>
             <form onSubmit={handleSubmitForm}>
-                <label  htmlFor="email">Email Id</label>
-                <input type='email' id="email"
+                {/* <label  htmlFor="email">Email Id</label> */}
+                <input type='email' id="email" className="input"
+                placeholder="Enter Email Id"
                  value={email} 
                  onChange={(e)=>setEmail(e.target.value)}/>
                 <br/>
-                <label  htmlFor="room">Room Id</label>
-                <input type='text' id="room"
+                {/* <label  htmlFor="room">Room Id</label> */}
+                <input type='text' className="input" id="room"
+                placeholder="Enter Room Id"
                 value={room} 
                 onChange={(e)=>setRoom(e.target.value)}/>
                 <br/>
-                <button>Enter Room</button>
+                <button className="button-52">Enter Room</button>
             </form>
         </div>
     )
