@@ -3,5 +3,29 @@
     width: 500px;
     height: 400px;
     /* background-color: green; */
-    margin-left: 750px;
+    /* margin-left: 750px; */
+}
+.Video{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.vcSend{
+    margin-top: 150px;
+    margin-left: 10px;
+    margin-right: 5px;
+    /* width: 50%; */
+}
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.voiceToText{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
 }

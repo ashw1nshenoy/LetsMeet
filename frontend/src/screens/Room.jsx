@@ -16,9 +16,13 @@ const [myStream,setMyStream]=useState(null)
 const [remoteStream,setRemoteStream]=useState(null)
 
 
-const { transcript,browserSupportsSpeechRecognition } = useSpeechRecognition()
+const { transcript,browserSupportsSpeechRecognition ,resetTranscript} = useSpeechRecognition()
 const StartListening=()=>SpeechRecognition.startListening({ continuous: true,language:'en-IN' })
 const StopListening=()=>SpeechRecognition.stopListening()
+const stopCall = useCallback(() => {
+    console.log('Call ended');
+    socket.disconnect();
+  }, [socket]);
 
 
 const handleUserJoined=useCallback(({email,id})=>{
@@ -102,7 +106,6 @@ useEffect(()=>{
 },[])
 
 
-
 useEffect(()=>{
     socket.on('user:joined',handleUserJoined)
     socket.on('incoming:call',handleIncomingCall)
@@ -120,13 +123,13 @@ useEffect(()=>{
     }
     
 },[socket, handleUserJoined, handleIncomingCall, handleCallAccepted, handleNegoNeedIncoming, handleNegoNeedFinal])
+
 if (!browserSupportsSpeechRecognition) {
     console.log('Support illa')
     return null
   }
     return (
         <div>
-            <h1>Room Page</h1>
             <h3>{remoteSocketId?'Connected':'No one in room'}</h3>
             {
                 myStream && <button onClick={sendStreams}>Send Video</button>
@@ -134,41 +137,55 @@ if (!browserSupportsSpeechRecognition) {
             {
                 remoteSocketId && <button onClick={handleCallUser}>Call</button>
             }
-
-            {            
-                myStream &&
-                <>   
-                <h1>My Stream</h1>
-                <ReactPlayer 
-                playing  
-                height="250px" 
-                width="300px" 
-                url={myStream}/>
-                </>
- 
+            {
+                remoteSocketId && <button onClick={stopCall}>Disconnect</button>
             }
+            <div className="main">
+            <div className="Video">
+            <div className="vcRec">
             {            
                 remoteStream &&
                 <>   
                 <h1>Remote Stream</h1>
                 <ReactPlayer
                 playing  
-                height="250px"
-                width="300px"
-                url={remoteStream}/>
+                height="450px"
+                width="400px"
+                url={remoteStream}
+                />
                 </>
  
             }
-            <div>
+            </div>
+            <div className="vcSend">
+            {            
+                myStream &&
+                <>   
+                <h1>My Stream</h1>
+                <ReactPlayer 
+                playing 
+                muted 
+                height="250px" 
+                width="200px" 
+                url={myStream}
+                />
+                </>
+ 
+            }
+            </div>
+            </div>
+            <div className="voiceToText">
                 <h3>Listening to you</h3>
                 <div className="textBox">
                     <button onClick={StartListening}>Start Listening</button>
                     <button onClick={StopListening}>Stop Listening</button>
+                    <button onClick={resetTranscript}>Reset</button>
                     <div>
                     <p>{transcript}</p>
                     </div>
                 </div> 
             </div>
+        </div>
         </div>
     )
 }
